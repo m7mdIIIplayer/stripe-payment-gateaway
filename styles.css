@@ -1,0 +1,386 @@
+:root {
+    --bg: #0c0b0c; /* Dark canvas to let colors glow */
+    --card: rgba(113, 85, 147, 0.55);
+    --text: #ffffff; /* Off-white base text color */
+    --muted: #cfd2d8;
+    --primary: #9D44C0;
+    --primary-hover: #EC53B0;
+    --border: rgba(255, 255, 255, 0.12);
+    --success: #86efac;
+    --error: #fca5a5;
+    --shadow: 0 18px 50px rgba(19, 19, 19, 0.686);
+}
+
+/* Global */
+h1{
+    color: white;
+}
+* { box-sizing: border-box; }
+html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Gradient Scrollbar: cross-browser */
+html {
+    /* Firefox scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: #9D44C0 rgba(255, 255, 255, 0.08);
+}
+/* Chromium/Edge/Safari */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 12px;
+    background: linear-gradient(
+        180deg,
+        #0E21A0 0%,
+        #4D2DB7 25%,
+        #9D44C0 50%,
+        #EC53B0 75%,
+        #FFEF5F 100%
+    );
+    border: 2px solid rgba(0, 0, 0, 0); /* creates padding for track */
+    background-clip: padding-box;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+}
+::-webkit-scrollbar-thumb:hover {
+    filter: brightness(1.05);
+}
+::-webkit-scrollbar-thumb:active {
+    filter: brightness(1.12);
+}
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+/* Background container keeps heavy blur for soft blending */
+.bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    filter: blur(200px);
+    will-change: filter;
+}
+
+/* Circles prepared for GPU-accelerated transforms */
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.95;
+    will-change: transform;
+    transform: translate3d(0, 0, 0) scale(1);
+}
+
+/* Keep all other existing styles */
+.c1 { width: 120px; height: 120px; background: #0E21A0; top: -10px; left: -140px; }
+.c2 { width: 140px; height: 140px; background: #4D2DB7; top: 140px; right: -180px; }
+.c3 { width: 580px; height: 580px; background: #9D44C0; bottom: -160px; left: -120px; }
+.c4 { width: 520px; height: 520px; background: #EC53B0; bottom: 60px; right: -160px; }
+.c5 { width: 520px; height: 520px; background: #FFEF5F; top: 65%; left: 45%; }
+
+.container {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 24px 16px 48px;
+    color: #F8F8F8;
+    z-index: 223 ;
+}
+/* Header */
+.header {
+    text-align: center;
+    margin: 12px 0 20px;
+}
+.header h1 {
+    font-size: 1.6rem;
+    margin: 0;
+    letter-spacing: 0.2px;
+    color: var(--text);
+}
+.header .sub {
+    margin: 6px 0 0;
+    font-size: 0.95rem;
+}
+
+/* iOS-inspired payment card (frosted glass with gradient border) */
+.card {
+    position: relative; 
+backdrop-filter: blur(500px);
+-webkit-backdrop-filter: blur(10px);
+    border-radius: 24px;
+    border: 3px solid var(--border);
+    box-shadow: var(--shadow);
+    padding: 18px;
+    transition: transform 0.18s ease, box-shadow 0.3s ease, background 0.3s ease;
+    
+
+}
+.card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+}
+.card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 22px 60px rgba(2, 8, 20, 0.6);
+}
+
+/* Fields */
+.field {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+.field label {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+.field input[type="number"],
+.field input[type="text"] {
+    width: 100%;
+    z-index: 20;
+    padding: 12px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+    font-size: 1rem;
+}
+.field input::placeholder {
+    color: rgba(248, 248, 248, 0.6);
+}
+.field input:focus {
+    border-color: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 0 0 3px rgba(236, 83, 176, 0.25);
+    background: rgba(255, 255, 255, 0.1);
+}
+.help {
+    min-height: 18px;
+    color: var(--muted);
+}
+
+/* Actions */
+.actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 10px 0 14px;
+}
+
+/* Buttons with subtle gradients and touch-friendly states */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 48px;
+    padding: 0 16px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+    color: var(--text);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease,
+     transform 0.06s ease,
+      box-shadow 0.25s ease;
+    touch-action: manipulation;
+    z-index: 22;
+}
+.btn:hover { background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04)); }
+.btn:active { transform: translateY(1px) scale(0.995); }
+.btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+.btn-primary {
+    background: linear-gradient(135deg, #5521ff, #9D44C0);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--text);
+    box-shadow: 0 10px 24px rgba(157, 68, 192, 0.35);
+    transition: 0.3 ease-in-out;
+}
+.btn-primary:hover {
+    background: linear-gradient(135deg, #8c69ff, #EC53B0);
+    color: #fff;
+   transition: 0.3 ease-in-out;
+}
+.txt{
+    background-color: #2e013c;
+    padding: 10px;
+    border-radius: 10px;
+    color: var(--text);
+    opacity: 0.5;
+}
+/* Inline spinner on button when loading */
+.btn-primary.btn--loading::after {
+    content: "";
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    border-top-color: rgba(255,255,255,0.3);
+    animation: spin 0.8s linear infinite;
+    display: inline-block;
+}
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Result and status */
+.result {
+    display: grid;
+    gap: 8px;
+}
+.result label {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+.status {
+    margin-top: 10px;
+    font-size: 0.95rem;
+}
+/* Dynamic Island (top-center notification) */
+.island {
+    position: fixed;
+    width: 50vb;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px) scale(0.98);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(20, 22, 32, 0.6);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+    color: var(--text);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 240ms cubic-bezier(.2, .8, .2, 1), transform 320ms cubic-bezier(.2, .8, .2, 1);
+    z-index: 1000;
+}
+.island::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    
+}
+.island--show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0) scale(1);
+    animation: di-pop 340ms cubic-bezier(.2, .8, .2, 1);
+}
+@keyframes di-pop {
+    0%   { transform: translateX(-50%) translateY(-10px) scale(0.94); }
+    60%  { transform: translateX(-50%) translateY(0)     scale(1.04) scaleX(1.12); }
+    100% { transform: translateX(-50%) translateY(0)     scale(1) scaleX(1); }
+}
+
+/* Variants */
+.island--success {
+    background: linear-gradient(135deg, rgba(22, 163, 74, 0.25), rgba(157, 68, 192, 0.18));
+    border-color: rgba(22, 163, 74, 0.35);
+}
+.island--error {
+    background: linear-gradient(135deg, rgba(220, 38, 38, 0.28), rgba(236, 83, 176, 0.18));
+    border-color: rgba(220, 38, 38, 0.35);
+}
+.island--info {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(157, 68, 192, 0.18));
+    border-color: rgba(59, 130, 246, 0.35);
+}
+
+/* Content */
+.island__icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+}
+.island__content {
+    display: grid;
+    gap: 2px;
+}
+.island__title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.2px;
+}
+.island__desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+.status--ok { color: var(--success); }
+.status--err { color: var(--error); }
+
+/* Spacing on larger screens */
+@media (max-width: 640px) {
+    .header h1 {
+        font-size: 1.4rem;
+    }
+    .header .sub {
+        font-size: 0.85rem;
+    }
+    .card {
+        padding: 16px;
+        border-radius: 20px;
+    }
+    .btn {
+        height: 44px;
+        padding: 0 14px;
+        border-radius: 12px;
+    }
+    .island {
+        width: 90vw;
+        height: 40px;
+        padding: 10px 14px;
+    }
+    .island__title {
+        font-size: 0.9rem;
+    }
+    .island__desc {
+        font-size: 0.8rem;
+    }
+    /* Mobile: slimmer scrollbar, cleaner feel */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    /* Optional breathing room if page scrolls */
+    .container {
+        padding-bottom: 72px;
+    }
+}
+
+/* Keep other existing styles intact */
