@@ -3,8 +3,10 @@ const createBtn = document.getElementById("createBtn");
 const copyBtn = document.getElementById("copyBtn");
 const linkOutput = document.getElementById("paymentLink");
 const statusEl = document.getElementById("status");
+const currencySelect = document.getElementById("currency");
 
 let lastLink = "";
+const URL = 'https://stripe-payment-gateaway.vercel.app/checkout.html';
 
 // Dynamic Island helpers
 function getIslandEl() {
@@ -81,7 +83,8 @@ function setLoading(loading) {
 }
 
 // Mock API call (replace with your real fetch later)
-function mockCreatePaymentLink(amount) {
+// Replace mockCreatePaymentLink to use the new URL (and include currency)
+function mockCreatePaymentLink(amount, currency) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             const ok = true;
@@ -89,7 +92,8 @@ function mockCreatePaymentLink(amount) {
                 reject(new Error("Failed to create payment link."));
                 return;
             }
-            const link = `https://pay.example.com/charge/${Date.now()}?amount=${Number(amount).toFixed(2)}`;
+            const amt = Number(amount).toFixed(2);
+            const link = `${URL}?amount=${encodeURIComponent(amt)}&currency=${encodeURIComponent(currency || 'USD')}`;
             resolve({ link });
         }, 1500);
     });
@@ -109,10 +113,15 @@ async function handleCreate() {
     lastLink = "";
 
     try {
-        // Replace mockCreatePaymentLink with real API call below:
-        // const res = await fetch("YOUR_API_ENDPOINT", { method: "POST", body: JSON.stringify({ amount: Number(value) }) });
+        // When you swap to the real API, include currency:
+        // const res = await fetch("YOUR_API_ENDPOINT", {
+        //   method: "POST",
+        //   body: JSON.stringify({ amount: Number(value), currency })
+        // });
         // const data = await res.json();
-        const { link } = await mockCreatePaymentLink(value);
+
+        const currency = currencySelect?.value || "USD";
+        const { link } = await mockCreatePaymentLink(value, currency);
 
         lastLink = link;
         linkOutput.value = link;
@@ -296,3 +305,4 @@ copyBtn.addEventListener("click", handleCopy);
 
 // Initialize
 updateCreateButtonState();
+

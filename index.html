@@ -28,11 +28,25 @@
                     min="0.01"
                     placeholder="e.g. 19.99"
                     autocomplete="off"
-                    class="input-1"
+                    
                 />
                 <small id="amountHelp" class="help"></small>
             </div>
 
+            <!-- Currency selector field -->
+            <div class="field">
+                <label for="currency">Select currency</label>
+                <select id="currency" class="input-1">
+                    <option value="USD" selected class="option-xx">USD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="SAR">SAR</option>
+                    <option value="AED">AED</option>
+                    <option value="KWD">KWD</option>
+                    <option value="QAR">QAR</option>
+                    <option value="BHD">BHD</option>
+                    <option value="OMR">OMR</option>
+                </select>
+            </div>
             <div class="actions">
                 <button id="createBtn" class="btn btn-primary" disabled>
                     Create Payment Link
@@ -59,57 +73,6 @@
         </div>
     </div>
 
-    <!-- Head additions: public verification and Spaceremit config -->
-    <meta name="spaceremit-verification" content="XXXXXXXXXXXXDJFCCCCCCCCCCCCCC">
-    <script>
-      // Read public key from meta and provide required globals for the library
-      const SP_PUBLIC_KEY = document.querySelector('meta[name="spaceremit-verification"]')?.content || 'YOUR_PUBLIC_KEY';
-      const SP_FORM_ID = "#spaceremit-form";
-      const SP_SELECT_RADIO_NAME = "sp-pay-type-radio";
-      const LOCAL_METHODS_BOX_STATUS = true;
-      const LOCAL_METHODS_PARENT_ID = "#spaceremit-local-methods-pay";
-      const CARD_BOX_STATUS = true;
-      const CARD_BOX_PARENT_ID = "#spaceremit-card-pay";
-      let SP_FORM_AUTO_SUBMIT_WHEN_GET_CODE = true;
-    
-      // Callbacks: forward to app-level events for script.js to handle
-      function SP_SUCCESSFUL_PAYMENT(spaceremit_code) {
-        window.dispatchEvent(new CustomEvent('sp-payment-completed', { detail: { code: spaceremit_code } }));
-      }
-      function SP_FAILD_PAYMENT() {
-        window.dispatchEvent(new CustomEvent('sp-payment-failed'));
-      }
-      function SP_RECIVED_MESSAGE(message) {
-        window.dispatchEvent(new CustomEvent('sp-message', { detail: { message } }));
-      }
-      function SP_NEED_AUTH(target_auth_link) {
-        window.dispatchEvent(new CustomEvent('sp-auth-needed', { detail: { url: target_auth_link } }));
-      }
-    </script>
     <script src="script.js"></script>
-    <!-- Hidden Spaceremit form (library reads this and injects iframes) -->
-    <form id="spaceremit-form" style="width:0;height:0;overflow:hidden;position:absolute;left:-9999px;">
-      <input type="hidden" name="amount" value="1">
-      <input type="hidden" name="currency" value="USD">
-    
-      <input type="hidden" name="fullname" value="">
-      <input type="hidden" name="email" value="">
-      <input type="hidden" name="phone" value="">
-      <input type="hidden" name="notes" value="">
-    
-      <div class="sp-one-type-select">
-        <input type="radio" name="sp-pay-type-radio" value="local-methods-pay" id="sp_local_methods_radio" checked>
-        <label for="sp_local_methods_radio"><div>Local payment methods</div></label>
-        <div id="spaceremit-local-methods-pay"></div>
-      </div>
-    
-      <div class="sp-one-type-select">
-        <input type="radio" name="sp-pay-type-radio" value="card-pay" id="sp_card_radio">
-        <label for="sp_card_radio"><div>Card payment</div></label>
-        <div id="spaceremit-card-pay"></div>
-      </div>
-    </form>
-    <!-- Include Spaceremit library (after config constants are defined) -->
-    <script src="https://spaceremit.com/api/v2/js_script/spaceremit.js"></script>
 </body>
 </html>

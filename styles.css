@@ -154,8 +154,8 @@ backdrop-filter: blur(500px);
     font-weight: 600;
     font-size: 0.95rem;
 }
-.field input[type="number"],
-.field input[type="text"] {
+.field select ,.field input[type="number"]  , .field input[type="text"] , .field input[type="email"] , .field input[type="year"] , .field input[type="month"]  {
+    /* Month input styling + z-index fixes for expiry/CVC/email */
     width: 100%;
     z-index: 20;
     padding: 12px 14px;
@@ -166,11 +166,28 @@ backdrop-filter: blur(500px);
     outline: none;
     transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
     font-size: 1rem;
+    appearance: none;
 }
-.field input::placeholder {
-    color: rgba(248, 248, 248, 0.6);
+
+
+.field input[type="month"]:focus {
+    border-color: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 0 0 3px rgba(236, 83, 176, 0.25);
+    background: rgba(255, 255, 255, 0.1);
 }
-.field input:focus {
+
+/* Elevate problematic inputs above any overlays */
+#cardExpiry, #cardCVC, #email {
+    position: relative;
+    z-index: 400;
+}
+/* Ensure the card itself sits clearly above the background */
+.card {
+    z-index: 300;
+}
+
+/* Error highlight for invalid fields already present */
+.field select:focus {
     border-color: rgba(255, 255, 255, 0.35);
     box-shadow: 0 0 0 3px rgba(236, 83, 176, 0.25);
     background: rgba(255, 255, 255, 0.1);
@@ -309,6 +326,7 @@ backdrop-filter: blur(500px);
     background: linear-gradient(135deg, rgba(22, 163, 74, 0.25), rgba(157, 68, 192, 0.18));
     border-color: rgba(22, 163, 74, 0.35);
 }
+/* Error highlight for invalid fields */
 .island--error {
     background: linear-gradient(135deg, rgba(220, 38, 38, 0.28), rgba(236, 83, 176, 0.18));
     border-color: rgba(220, 38, 38, 0.35);
@@ -384,3 +402,73 @@ backdrop-filter: blur(500px);
 }
 
 /* Keep other existing styles intact */
+
+/* Charge summary styles */
+.charge-summary {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.06);
+    position: relative;
+    z-index: 350;
+}
+.charge-summary__label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--muted);
+}
+.charge-summary__value {
+    display: inline-flex;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--text);
+}
+/* Improved dropdown styling: dark theme, custom arrow, readable options */
+.field select {
+    width: 100%;
+    position: relative;
+    z-index: 400;
+    padding: 12px 42px 12px 14px; /* padding-right for arrow */
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 14px;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+    font-size: 1rem;
+    appearance: none; /* hide native arrow */
+
+    /* Custom chevron arrow (SVG as data URL) */
+    background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="%23cfd2d8" d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+}
+.field select:hover {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+}
+.field select:focus {
+    border-color: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 0 0 3px rgba(236, 83, 176, 0.25);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Dropdown option list (best-effort; supported in modern browsers) */
+.field select option {
+    margin-top: 30px;
+    border-radius: 30px;
+    background: #161616;
+    color: var(--text);
+}
+.field select option:hover,
+.field select option:checked {
+    background: #242424;
+    color: var(--text);
+}

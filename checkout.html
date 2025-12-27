@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Checkout</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <div class="bg" id="bgLayer"></div>
+
+    <main class="container">
+        <header class="header">
+            <h1>Card Payment</h1>
+            <p class="sub" id="orderSummary">Processing...</p>
+        </header>
+
+        <!-- Add charge summary to the top of the card -->
+        <section class="card">
+            <div class="charge-summary">
+                <div class="charge-summary__label">Amount</div>
+                <div class="charge-summary__value">
+                    <span id="summaryAmount">—</span>
+                    <span id="summaryCurrency">—</span>
+                </div>
+            </div>
+
+                        <div class="field">
+                <label for="email">Email</label>
+                <input id="email" 
+                type="email" 
+                class="input-1" 
+                placeholder="you@example.com" 
+                autocomplete="email" />
+            </div>
+            <div class="field">
+                <label for="cardName">Cardholder Name</label>
+                <input 
+                id="cardName" 
+                type="text" 
+                class="input-1" 
+                placeholder="e.g. Jane Doe" 
+                autocomplete="cc-name"
+                />
+            </div>
+
+            <div class="field">
+                <label for="cardNumber">Card Number</label>
+                <input id="cardNumber" 
+                type="text" class="input-1" 
+                placeholder="1234 5678 9012 3456" 
+                inputmode="numeric" 
+                autocomplete="cc-number" />
+            </div>
+
+            <!-- Expiry switched to a month picker and Email field added -->
+            <div class="field" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div>
+                    <label for="cardExpiry">Expiry (MM/YY)</label>
+                    <input id="cardExpiry" type="text" class="input-1" autocomplete="cc-exp" placeholder="2026-05" />
+                </div>
+                <div>
+                    <label for="cardCVC">CVC</label>
+                    <input id="cardCVC" type="text" class="input-1" placeholder="3 or 4 digits" inputmode="numeric" autocomplete="cc-csc" />
+                </div>
+            </div>
+
+
+            <div class="actions">
+                <button id="payBtn" class="btn btn-primary" disabled>
+                    Pay
+                </button>
+            </div>
+
+            <div id="status" class="status" aria-live="polite"></div>
+        </section>
+    </main>
+
+    <div id="dynamicIsland" class="island" aria-live="polite" aria-hidden="true" role="status">
+        <div class="island__icon" aria-hidden="true"></div>
+        <div class="island__content">
+            <div class="island__title"></div>
+            <div class="island__desc"></div>
+        </div>
+    </div>
+
+    <script src="checkout.js"></script>
+</body>
+</html>
