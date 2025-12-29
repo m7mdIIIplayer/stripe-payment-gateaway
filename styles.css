@@ -243,6 +243,9 @@ backdrop-filter: blur(500px);
     color: #fff;
    transition: 0.3 ease-in-out;
 }
+.btn-full {
+    grid-column: span 2;
+}
 .txt{
     background-color: #2e013c;
     padding: 10px;
@@ -472,3 +475,118 @@ backdrop-filter: blur(500px);
     background: #242424;
     color: var(--text);
 }
+
+/* Stats Section */
+.stats-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+.stat-box {
+    flex: 1;
+    background: rgba(113, 85, 147, 0.3);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 6px;
+}
+.stat-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+/* Withdraw Modal */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 900;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.modal-overlay[aria-hidden="false"] {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-card {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+    width: 90%;
+    max-width: 420px;
+    background: #1a1a1a;
+    background: rgba(20, 20, 30, 0.95);
+    border: 2px solid var(--border);
+    border-radius: 24px;
+    padding: 24px;
+    z-index: 910;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.modal-card[aria-hidden="false"] {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.modal-title {
+    margin: 0 0 16px;
+    text-align: center;
+    font-size: 1.4rem;
+}
+.modal-balance {
+    text-align: center;
+    margin-bottom: 24px;
+    font-size: 1.1rem;
+    color: var(--muted);
+}
+.modal-balance span {
+    color: var(--text);
+    font-weight: 700;
+    font-size: 1.3rem;
+}
+
+.withdraw-options {
+    display: grid;
+    gap: 12px;
+}
+.btn-option {
+    width: 100%;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.05);
+}
+.btn-option:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.btn-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+}
+.btn-close:hover { color: var(--text); }
+
+.hidden { display: none !important; }

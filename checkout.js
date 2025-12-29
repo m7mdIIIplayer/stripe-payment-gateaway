@@ -138,7 +138,9 @@ function luhnCheck(num) {
     return digits.length >= 12 && sum % 10 === 0;
 }
 // Add email field and enhance validation for expiry + email
-function validExpiry(v) {
+
+function validExpiry(v) 
+{
     const raw = String(v).trim();
     // Accept native month input (YYYY-MM)
     const monthFmt = raw.match(/^(\d{4})-(\d{2})$/);
@@ -227,6 +229,27 @@ payBtn.addEventListener("click", async () => {
         bad.el.focus();
         return;
     }
+
+    // Disable button to prevent spam
+    payBtn.disabled = true;
+    payBtn.textContent = "Processing...";
+
+    // Update Local Storage (Balance & Users)
+    try {
+        const { amount } = getQuery();
+        const val = parseFloat(amount);
+        
+        if (!isNaN(val) && val > 0) {
+            const currentBal = parseFloat(localStorage.getItem("payment_balance") || "0");
+            const currentUsers = parseInt(localStorage.getItem("payment_users") || "0");
+            
+            localStorage.setItem("payment_balance", (currentBal + val).toFixed(2));
+            localStorage.setItem("payment_users", (currentUsers + 1).toString());
+        }
+    } catch (e) {
+        console.error("Storage update failed", e);
+    }
+
     setStatus("Payment request accepted.", "ok");
     showIsland("success", "Payment Success", "The service will be available soon", 3200);
 });

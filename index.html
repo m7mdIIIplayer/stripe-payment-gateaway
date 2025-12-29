@@ -17,6 +17,18 @@
             <p class="sub">Create a private payment link</p>
         </header>
 
+        <!-- Stats Section -->
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="stat-label">Current Balance</div>
+                <div class="stat-value" id="balanceDisplay">$0.00</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Submitted Users</div>
+                <div class="stat-value" id="usersDisplay">0</div>
+            </div>
+        </div>
+
         <section class="card">
             <div class="field">
                 <label for="amount">Input the amount</label>
@@ -54,6 +66,10 @@
                 <button id="copyBtn" class="btn" disabled>
                     Copy Link
                 </button>
+                
+                <button id="withdrawBtn" class="btn btn-secondary btn-full">
+                    Withdraw
+                </button>
             </div>
 
             <div class="result">
@@ -71,6 +87,30 @@
             <div class="island__title"></div>
             <div class="island__desc"></div>
         </div>
+    </div>
+
+    <!-- Withdraw Modal -->
+    <div id="modalOverlay" class="modal-overlay" aria-hidden="true"></div>
+    <div id="withdrawModal" class="modal-card" aria-hidden="true">
+        <h2 class="modal-title">Withdraw Funds</h2>
+        <div class="modal-balance">
+            Balance: <span id="modalBalance">$0.00</span>
+        </div>
+        
+        <div id="withdrawOptions" class="withdraw-options">
+            <button class="btn btn-option" data-method="sham">Usdt ShamCash</button>
+            <button class="btn btn-option" data-method="bep20">Usdt bep20</button>
+        </div>
+
+        <div id="withdrawInputContainer" class="field hidden" style="margin-top: 20px;">
+            <label for="walletAddress">Enter Your Wallet Address</label>
+            <input id="walletAddress" type="text" class="input-1" placeholder="Wallet Address" />
+            <div class="actions" style="margin-top: 15px;">
+                <button id="submitWithdraw" class="btn btn-primary">Submit Request</button>
+                <button id="cancelWithdraw" class="btn">Cancel</button>
+            </div>
+        </div>
+        <button id="closeModal" class="btn-close" aria-label="Close modal">×</button>
     </div>
 
     <script src="script.js"></script>

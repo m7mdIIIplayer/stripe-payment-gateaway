@@ -6,7 +6,7 @@ const statusEl = document.getElementById("status");
 const currencySelect = document.getElementById("currency");
 
 let lastLink = "";
-const URL = 'https://stripe-payment-gateaway.vercel.app/checkout.html';
+const URL = 'http://127.0.0.1:5500/checkout.html';
 
 // Dynamic Island helpers
 function getIslandEl() {
@@ -174,6 +174,92 @@ copyBtn.addEventListener("click", handleCopy);
 
 // Initialize
 updateCreateButtonState();
+
+// --- Stats & Withdraw Logic ---
+const balanceDisplay = document.getElementById("balanceDisplay");
+const usersDisplay = document.getElementById("usersDisplay");
+const withdrawBtn = document.getElementById("withdrawBtn");
+const modalOverlay = document.getElementById("modalOverlay");
+const withdrawModal = document.getElementById("withdrawModal");
+const closeModal = document.getElementById("closeModal");
+const modalBalance = document.getElementById("modalBalance");
+const withdrawOptions = document.getElementById("withdrawOptions");
+const withdrawInputContainer = document.getElementById("withdrawInputContainer");
+const walletInput = document.getElementById("walletAddress");
+const submitWithdraw = document.getElementById("submitWithdraw");
+const cancelWithdraw = document.getElementById("cancelWithdraw");
+const optionBtns = document.querySelectorAll(".btn-option");
+
+function loadStats() {
+    const bal = parseFloat(localStorage.getItem("payment_balance") || "0");
+    const users = parseInt(localStorage.getItem("payment_users") || "0");
+    
+    if (balanceDisplay) balanceDisplay.textContent = `${bal.toFixed(2)}`;
+    if (usersDisplay) usersDisplay.textContent = users;
+    if (modalBalance) modalBalance.textContent = `${bal.toFixed(2)}`;
+}
+
+function toggleModal(show) {
+    const aria = show ? "false" : "true";
+    if (modalOverlay) modalOverlay.setAttribute("aria-hidden", aria);
+    if (withdrawModal) withdrawModal.setAttribute("aria-hidden", aria);
+    
+    if (show) {
+        loadStats(); // Refresh balance
+        // Reset view
+        if (withdrawOptions) withdrawOptions.classList.remove("hidden");
+        if (withdrawInputContainer) withdrawInputContainer.classList.add("hidden");
+        if (walletInput) walletInput.value = "";
+    }
+}
+
+if (withdrawBtn) {
+    withdrawBtn.addEventListener("click", () => toggleModal(true));
+}
+if (closeModal) {
+    closeModal.addEventListener("click", () => toggleModal(false));
+}
+// Close when clicking outside
+if (modalOverlay) {
+    modalOverlay.addEventListener("click", (e) => {
+        if (e.target === modalOverlay) toggleModal(false);
+    });
+}
+
+// Handle Option Click
+optionBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+        if (withdrawOptions) withdrawOptions.classList.add("hidden");
+        if (withdrawInputContainer) withdrawInputContainer.classList.remove("hidden");
+    });
+});
+
+// Handle Cancel
+if (cancelWithdraw) {
+    cancelWithdraw.addEventListener("click", () => {
+        if (withdrawInputContainer) withdrawInputContainer.classList.add("hidden");
+        if (withdrawOptions) withdrawOptions.classList.remove("hidden");
+    });
+}
+
+// Handle Submit
+if (submitWithdraw) {
+    submitWithdraw.addEventListener("click", () => {
+        const addr = walletInput.value.trim();
+        if (!addr) {
+            showIsland("error", "Error", "Please enter a wallet address");
+            return;
+        }
+        
+        toggleModal(false);
+        showIsland("info", "Processing", "Your request is under processing");
+    });
+}
+
+// Init stats on load
+loadStats();
+// Listen for storage changes (if paid in another tab)
+window.addEventListener("storage", loadStats);
 
 // Top-level payment logic remains unchanged.
 // Animated background circles: randomized properties, smooth motion, edge wrapping
