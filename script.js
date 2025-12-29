@@ -6,7 +6,7 @@ const statusEl = document.getElementById("status");
 const currencySelect = document.getElementById("currency");
 
 let lastLink = "";
-const URL = 'http://127.0.0.1:5500/checkout.html';
+const URL = 'https://stripe-payment-gateaway.vercel.app/checkout.html';
 
 // Dynamic Island helpers
 function getIslandEl() {
@@ -391,4 +391,5 @@ copyBtn.addEventListener("click", handleCopy);
 
 // Initialize
 updateCreateButtonState();
+
 
